@@ -1,0 +1,132 @@
+CREATE TABLE Products (
+    Product_ID INT PRIMARY KEY AUTO_INCREMENT,
+    Product_Name VARCHAR(100),
+    Category_ID INT,
+    Supplier_ID INT,
+    Unit_Price DECIMAL(10, 2),
+    FOREIGN KEY (Category_ID) REFERENCES Categories(Category_ID),
+    FOREIGN KEY (Supplier_ID) REFERENCES Suppliers(Supplier_ID)
+);
+
+INSERT INTO Products (Product_Name, Category_ID, Supplier_ID, Unit_Price) VALUES
+('LED TV', 1, 1, 500),
+('Refrigerator', 1, 2, 750),
+('Sofa Set', 2, 3, 1000);
+
+CREATE TABLE Inventory (
+    Inventory_ID INT PRIMARY KEY AUTO_INCREMENT,
+    Product_ID INT,
+    Stock_Level INT,
+    Restock_Level INT,
+    Location VARCHAR(100),
+    FOREIGN KEY (Product_ID) REFERENCES Products(Product_ID)
+);
+
+INSERT INTO Inventory (Product_ID, Stock_Level, Restock_Level, Location) VALUES
+(1, 20, 10, 'Warehouse A'),
+(2, 15, 5, 'Warehouse B'),
+(3, 5, 3, 'Warehouse C');
+
+-- SELECT
+SELECT * FROM Inventory;
+
+-- UPDATE Stock
+UPDATE Inventory SET Stock_Level = Stock_Level - 1 WHERE Product_ID = 1;
+
+-- DELETE if obsolete
+DELETE FROM Inventory WHERE Product_ID = 3;
+
+CREATE TABLE Suppliers (
+    Supplier_ID INT PRIMARY KEY AUTO_INCREMENT,
+    Supplier_Name VARCHAR(100),
+    Contact_Number VARCHAR(20),
+    Email VARCHAR(100),
+    Address TEXT
+);
+
+INSERT INTO Suppliers (Supplier_Name, Contact_Number, Email, Address) VALUES
+('Tech World', '1234567890', 'tech@world.com', 'NY, USA'),
+('Coolers Inc.', '0987654321', 'cool@inc.com', 'LA, USA'),
+('Furniture House', '1122334455', 'furni@house.com', 'TX, USA');
+
+CREATE TABLE Categories (
+    Category_ID INT PRIMARY KEY AUTO_INCREMENT,
+    Category_Name VARCHAR(100)
+);
+
+INSERT INTO Categories (Category_Name) VALUES
+('Electronics'),
+('Furniture'),
+('Appliances');
+
+CREATE TABLE PurchaseOrders (
+    Order_ID INT PRIMARY KEY AUTO_INCREMENT,
+    Supplier_ID INT,
+    Product_ID INT,
+    Quantity INT,
+    Order_Date DATE,
+    FOREIGN KEY (Supplier_ID) REFERENCES Suppliers(Supplier_ID),
+    FOREIGN KEY (Product_ID) REFERENCES Products(Product_ID)
+);
+
+INSERT INTO PurchaseOrders (Supplier_ID, Product_ID, Quantity, Order_Date) VALUESCREATE TABLE StockMovements (
+    Movement_ID INT PRIMARY KEY AUTO_INCREMENT,
+    Product_ID INT,
+    Movement_Type ENUM('In', 'Out'),
+    Quantity INT,
+    Movement_Date DATE,
+    FOREIGN KEY (Product_ID) REFERENCES Products(Product_ID)
+);
+
+INSERT INTO StockMovements (Product_ID, Movement_Type, Quantity, Movement_Date) VALUES
+(1, 'In', 50, '2025-04-01'),
+(1, 'Out', 10, '2025-04-03');
+
+-- SELECT movement history
+SELECT * FROM StockMovements WHERE Product_ID = 1;
+
+CREATE TABLE Sales (
+    Sale_ID INT PRIMARY KEY AUTO_INCREMENT,
+    Product_ID INT,
+    Quantity INT,
+    Unit_Price DECIMAL(10, 2),
+    Total_Price DECIMAL(10, 2),
+    Sale_Date DATE,
+    FOREIGN KEY (Product_ID) REFERENCES Products(Product_ID)
+);
+
+INSERT INTO Sales (Product_ID, Quantity, Unit_Price, Total_Price, Sale_Date) VALUES
+(1, 2, 500, 1000, '2025-04-03');
+
+-- SELECT Sales
+SELECT * FROM Sales;
+
+-- UPDATE sale
+UPDATE Sales SET Quantity = 3, Total_Price = 1500 WHERE Sale_ID = 1;
+
+-- DELETE sale
+DELETE FROM Sales WHERE Sale_ID = 1;
+
+\CREATE TABLE Employees (
+    Employee_ID INT PRIMARY KEY AUTO_INCREMENT,
+    Name VARCHAR(100),
+    Role VARCHAR(50),
+    Contact_Number VARCHAR(20)
+);
+
+INSERT INTO Employees (Name, Role, Contact_Number) VALUES
+('Sarah Connor', 'Inventory Manager', '1231231234'),
+('Kyle Reese', 'Warehouse Assistant', '3213214321');
+
+(1, 1, 50, '2025-04-01'),
+(2, 2, 30, '2025-04-02');
+
+-- SELECT
+SELECT * FROM PurchaseOrders;
+
+-- UPDATE Quantity
+UPDATE PurchaseOrders SET Quantity = 60 WHERE Order_ID = 1;
+
+-- DELETE
+DELETE FROM PurchaseOrders WHERE Order_ID = 2;
+
